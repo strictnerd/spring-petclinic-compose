@@ -46,3 +46,10 @@ http_server_requests_seconds_sum{application="frontend",exception="None",method=
 http_server_requests_seconds_count{application="frontend",exception="None",method="POST",outcome="REDIRECTION",status="302",uri="/owners/{ownerId}/edit",} 1.0
 http_server_requests_seconds_sum{application="frontend",exception="None",method="POST",outcome="REDIRECTION",status="302",uri="/owners/{ownerId}/edit",} 0.101176
 ```
+常見配置
+```aidl
+management.metrics.enable.all=false
+management.metrics.enable.http=true
+management.metrics.web.server.request.autotime.percentiles=0.90,0.99
+management.metrics.enable.jvm=true
+```

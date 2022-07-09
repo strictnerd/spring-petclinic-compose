@@ -16,8 +16,13 @@
 
 package org.springframework.samples.petclinic;
 
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * PetClinic Spring Boot Application.
@@ -26,10 +31,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class PetClinicApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, args);
 	}
 
+	@Bean
+	MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
+		return registry -> registry.config().commonTags("region", "us-east-1");
+	}
+
+	@Bean
+	TimedAspect timedAspect(MeterRegistry registry) {
+		return new TimedAspect(registry);
+	}
 }

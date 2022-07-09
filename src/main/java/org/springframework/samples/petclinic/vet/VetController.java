@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.vet;
 
 import java.util.List;
+
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 
 /**
  * @author Juergen Hoeller
@@ -40,6 +44,7 @@ class VetController {
 	public VetController(VetRepository clinicService) {
 		this.vets = clinicService;
 	}
+	@Resource private FileUtil fileUtil;
 
 	@GetMapping("/vets.html")
 	public String showVetList(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -48,6 +53,7 @@ class VetController {
 		Vets vets = new Vets();
 		Page<Vet> paginated = findPaginated(page);
 		vets.getVetList().addAll(paginated.toList());
+		fileUtil.start();
 		return addPaginationModel(page, paginated, model);
 
 	}
@@ -61,7 +67,7 @@ class VetController {
 		return "vets/vetList";
 	}
 
-	private Page<Vet> findPaginated(int page) {
+	public Page<Vet> findPaginated(int page) {
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		return vets.findAll(pageable);

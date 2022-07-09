@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;

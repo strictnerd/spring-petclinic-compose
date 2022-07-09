@@ -1,4 +1,4 @@
-# Spring PetClinic Sample Application 
+# Spring PetClinic Compose Application 
 > 帮助开发者集成Java第三方组件
 
 ## 集成 prometheus io.micrometer
